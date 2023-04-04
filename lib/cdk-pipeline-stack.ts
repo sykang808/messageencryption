@@ -1,8 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { SecretValue } from 'aws-cdk-lib';
-import * as pipelines from "aws-cdk-lib/pipelines";
-
+import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
 import {InfraStage} from './stage/infra-stage';
 /**
  * The stack that defines the application pipeline
@@ -13,21 +12,30 @@ export class CdkPipelineStack extends cdk.Stack {
     
       // The basic pipeline declaration. This sets the initial structure
       // of our pipeline
-    const pipeline = new pipelines.CodePipeline(this, 'Pipeline', {
-      selfMutation: false,
-      synth: new pipelines.ShellStep('Synth', {
-        input: pipelines.CodePipelineSource.gitHub('sykang808/messageencryption', 'main', {
-          // This is optional
-          authentication: SecretValue.secretsManager('github/sykang'),
+  
+      const pipeline = new cdk.pipelines.CodePipeline(this, 'Pipeline', {
+        selfMutation: false,
+        synth: new cdk.pipelines.ShellStep('Synth', {
+          input: CodePipelineSource.connection('sykang808/messageencryption', 'main', {
+            connectionArn: 'arn:aws:codestar-connections:us-west-2:566034038752:connection/abce9163-e524-4a2d-b6ba-dea4eed94964', // Created using the AWS console * });',
+          }),
+    //      input: cdk.pipelines.CodePipelineSource.gitHub('sykang808/messageencryption', 'main', {
+      //      // This is optional
+        //    authentication: SecretValue.secretsManager("github/sykang"), // Created using the AWS console * });',
+         // }),
+          commands: [
+            'npm ci',
+            'npm run build',
+            'npx cdk synth',
+          ],
         }),
-        commands: [
-          'npm ci',
-          'npm run build',
-          'npx cdk synth',
-        ],
-      }),
-    });
-    pipeline.addStage(new InfraStage(this, 'Prod', props));
+      });
+      pipeline.addStage(new InfraStage(this, 'Prod', {
+        env: {
+          account: props?.env?.account,
+          region: props?.env?.region,
+        },
+      }));
   }
 }
 
