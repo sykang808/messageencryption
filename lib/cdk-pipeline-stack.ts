@@ -2,7 +2,8 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { SecretValue } from 'aws-cdk-lib';
 import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
-import {InfraStage} from './stage/infra-stage';
+import { NetworkStage } from './stage/network-stage';
+import { ClusterStage } from './stage/cluster-stage';
 /**
  * The stack that defines the application pipeline
  */
@@ -30,7 +31,13 @@ export class CdkPipelineStack extends cdk.Stack {
           ],
         }),
       });
-      pipeline.addStage(new InfraStage(this, 'Prod', {
+      pipeline.addStage(new NetworkStage(this, 'MainNetworkStage', {
+        env: {
+          account: props?.env?.account,
+          region: props?.env?.region,
+        },
+      }));
+      pipeline.addStage(new ClusterStage(this, 'MainClusterStage', {
         env: {
           account: props?.env?.account,
           region: props?.env?.region,
