@@ -4,6 +4,7 @@ import * as ecs from "aws-cdk-lib/aws-ecs";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as ecsPatterns from "aws-cdk-lib/aws-ecs-patterns";
 import { EnvProps } from '../props/envprops';
+import { CfnOutput } from 'aws-cdk-lib';
 
 
 export class ECSFargateSonarCubeStack  extends cdk.Stack  {
@@ -24,6 +25,7 @@ export class ECSFargateSonarCubeStack  extends cdk.Stack  {
       memoryLimitMiB: 1024,
       desiredCount: 1,
       cpu: 512,
+      listenerPort: 9000,
       publicLoadBalancer:true,
       taskImageOptions: {
         image: ecs.ContainerImage.fromRegistry("sykang/sonarcube"),
@@ -33,6 +35,7 @@ export class ECSFargateSonarCubeStack  extends cdk.Stack  {
       },
     });
 
+    new CfnOutput(this, 'SonarCubeEndPoint', { value: loadBalancedFargateService.loadBalancer.loadBalancerDnsName });
     
     // The code that defines your stack goes here
 
