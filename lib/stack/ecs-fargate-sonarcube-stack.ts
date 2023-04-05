@@ -10,9 +10,13 @@ export class ECSFargateSonarCubeStack  extends cdk.Stack  {
   public cluster:ecs.Cluster;
   constructor(scope: Construct, id: string, props?:cdk.StackProps) {
     super(scope, id );
-   
-    /*
-    this.cluster = new ecs.Cluster(this, 'Cluster', { vpc:ec2.Vpc.fromLookup(this, 'MyVPC', myVpc )});
+    const myVpc = ec2.Vpc.fromLookup(this,"MyVPC", { 
+      tags:{
+        TEAM: "WESTSOFT"
+      }
+    });
+    
+    this.cluster = new ecs.Cluster(this, 'Cluster', {vpc:myVpc});
     const loadBalancedFargateService = new ecsPatterns.ApplicationLoadBalancedFargateService(this, 'Service', {
       cluster:this.cluster,
       memoryLimitMiB: 1024,
@@ -26,7 +30,8 @@ export class ECSFargateSonarCubeStack  extends cdk.Stack  {
       },
       loadBalancerName: 'application-lb-name',
     });
-*/
+
+    
     // The code that defines your stack goes here
 
     // example resource
