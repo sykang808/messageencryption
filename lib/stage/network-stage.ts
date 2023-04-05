@@ -13,5 +13,6 @@ export class NetworkStage  extends cdk.Stage  {
     //   visibilityTimeout: cdk.Duration.seconds(300)
     // });
     const vpc = new VPCStack( this, "MainVPC");
+    cdk.Tags.of(this).add('TEAM', 'WEST');
   }
 }

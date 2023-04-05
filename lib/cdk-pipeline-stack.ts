@@ -10,39 +10,25 @@ import { ClusterStage } from './stage/cluster-stage';
 export class CdkPipelineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
-    
-      // The basic pipeline declaration. This sets the initial structure
-      // of our pipeline
   
-      const pipeline = new cdk.pipelines.CodePipeline(this, 'Pipeline', {
-        selfMutation: false,
-        synth: new cdk.pipelines.ShellStep('Synth', {
-          input: CodePipelineSource.connection('sykang808/messageencryption', 'main', {
-            connectionArn: 'arn:aws:codestar-connections:us-west-2:566034038752:connection/abce9163-e524-4a2d-b6ba-dea4eed94964', // Created using the AWS console * });',
-          }),
-    //      input: cdk.pipelines.CodePipelineSource.gitHub('sykang808/messageencryption', 'main', {
-      //      // This is optional
-        //    authentication: SecretValue.secretsManager("github/sykang"), // Created using the AWS console * });',
-         // }),
-          commands: [
-            'npm ci',
-            'npm run build',
-            'npx cdk synth',
-          ],
+    // The basic pipeline declaration. This sets the initial structure
+    // of our pipeline
+
+    const pipeline = new cdk.pipelines.CodePipeline(this, 'Pipeline', {
+      selfMutation: false,
+      synth: new cdk.pipelines.ShellStep('Synth', {
+        input: CodePipelineSource.connection('sykang808/messageencryption', 'main', {
+          connectionArn: 'arn:aws:codestar-connections:us-west-2:566034038752:connection/abce9163-e524-4a2d-b6ba-dea4eed94964', // Created using the AWS console * });',
         }),
-      });
-      pipeline.addStage(new NetworkStage(this, 'MainNetworkStage', {
-        env: {
-          account: props?.env?.account,
-          region: props?.env?.region,
-        },
-      }));
-      pipeline.addStage(new ClusterStage(this, 'MainClusterStage', {
-        env: {
-          account: props?.env?.account,
-          region: props?.env?.region,
-        },
-      }));
+        commands: [
+          'npm ci',
+          'npm run build',
+          'npx cdk synth',
+        ],
+      }),
+    });
+    pipeline.addStage(new NetworkStage(this, 'MainNetworkStage'));
+    pipeline.addStage(new ClusterStage(this, 'MainClusterStage'));
   }
 }
 

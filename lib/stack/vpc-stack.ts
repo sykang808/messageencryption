@@ -13,5 +13,6 @@ export class VPCStack  extends cdk.Stack  {
       natGateways: 1,
       maxAzs: 3
     });
+    cdk.Tags.of(this).add('TEAM', 'WESTSOFT');
   }
 }
