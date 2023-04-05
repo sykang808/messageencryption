@@ -12,7 +12,12 @@ export class NetworkStage  extends cdk.Stage  {
     // const queue = new sqs.Queue(this, 'InfraQueue', {
     //   visibilityTimeout: cdk.Duration.seconds(300)
     // });
-    const vpc = new VPCStack( this, "MainVPC");
+    const vpc = new VPCStack( this, "MainVPC", {
+      env: {
+        account: '566034038752',
+        region: 'us-west-2',
+      }
+    });
     cdk.Tags.of(this).add('TEAM', 'WEST');
   }
 }

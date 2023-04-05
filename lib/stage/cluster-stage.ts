@@ -7,7 +7,12 @@ export class ClusterStage  extends cdk.Stage  {
   constructor(scope: Construct, id: string, props?: cdk.StageProps) {
     super(scope, id, props);
 
-    const ecscluster = new ECSClusterStack(this, "ECSClusterProd" );
-    const escsonarcube = new ECSFargateSonarCubeStack(this, "ECSFargateSonarCube");
+//    const ecscluster = new ECSClusterStack(this, "ECSClusterProd" );
+    const escsonarcube = new ECSFargateSonarCubeStack(this, "ECSFargateSonarCube", {
+      env: {
+        account: '566034038752',
+        region: 'us-west-2',
+      }
+    });
   }
 }
