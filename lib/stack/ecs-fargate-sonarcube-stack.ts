@@ -10,25 +10,27 @@ export class ECSFargateSonarCubeStack  extends cdk.Stack  {
   public cluster:ecs.Cluster;
   constructor(scope: Construct, id: string, props?:cdk.StackProps) {
     super(scope, id );
+
+    const image = ecs.ContainerImage.fromRegistry('sykang/sonarcube');
+
     const myVpc = ec2.Vpc.fromLookup(this,"MyVPC", { 
       tags:{
         TEAM: "WESTSOFT"
       }
     });
-    
     const cluster = new ecs.Cluster(this, 'Cluster', {vpc:myVpc});
     const loadBalancedFargateService = new ecsPatterns.ApplicationLoadBalancedFargateService(this, 'Service', {
       cluster,
       memoryLimitMiB: 1024,
       desiredCount: 1,
       cpu: 512,
+      publicLoadBalancer:true,
       taskImageOptions: {
         image: ecs.ContainerImage.fromRegistry("sykang/sonarcube"),
       },
       taskSubnets: {
         subnets: myVpc.privateSubnets,
       },
-      loadBalancerName: 'application-lb-name',
     });
 
     
