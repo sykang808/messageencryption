@@ -16,9 +16,9 @@ export class ECSFargateSonarCubeStack  extends cdk.Stack  {
       }
     });
     
-    this.cluster = new ecs.Cluster(this, 'Cluster', {vpc:myVpc});
+    const cluster = new ecs.Cluster(this, 'Cluster', {vpc:myVpc});
     const loadBalancedFargateService = new ecsPatterns.ApplicationLoadBalancedFargateService(this, 'Service', {
-      cluster:this.cluster,
+      cluster,
       memoryLimitMiB: 1024,
       desiredCount: 1,
       cpu: 512,
