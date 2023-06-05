@@ -6,7 +6,7 @@ import { EnvProps } from '../props/envprops';
 
 
 export class ClusterStage  extends cdk.Stage  {
-  constructor(scope: Construct, id: string, props?: EnvProps) {
+  constructor(scope: Construct, id: string, props: EnvProps) {
     super(scope, id, props);
 
 /*  const ecscluster = new ECSClusterStack(this, "ECSClusterProd" );
