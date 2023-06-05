@@ -27,16 +27,11 @@ export class CdkPipelineStack extends cdk.Stack {
         ],
       }),
     });
-    pipeline.addStage(new NetworkStage(this, 'MainNetworkStage',{
-      env: {
-        account: '566034038752',
-        region: 'us-west-2',
-      }}));
-    pipeline.addStage(new ClusterStage(this, 'MainClusterStage',{
-      env: {
-        account: '566034038752',
-        region: 'us-west-2',
-      }}));
+
+    const network = new NetworkStage(this, 'MainNetworkStage',props )
+    const cluster = new ClusterStage(this, 'MainClusterStage', { vpc:network.vpcstack.myVpc, env:props?.env} )
+    pipeline.addStage( network );
+    pipeline.addStage( cluster );
     }
 }
 

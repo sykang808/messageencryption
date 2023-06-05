@@ -3,7 +3,6 @@ import { Construct } from 'constructs';
 import * as ecs from "aws-cdk-lib/aws-ecs";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as ecsPatterns from "aws-cdk-lib/aws-ecs-patterns";
-import { EnvProps } from '../props/envprops';
 import { CfnOutput } from 'aws-cdk-lib';
 
 
