@@ -13,7 +13,7 @@ export class EKSClusterStack  extends cdk.Stack  {
     super(scope, id );
 
     const clusterProvider = new blueprints.GenericClusterProvider({
-      version: eks.KubernetesVersion.V1_21,
+      version: eks.KubernetesVersion.V1_26,
       managedNodeGroups: [{
           id: "cpu",
           minSize: 2,
@@ -36,7 +36,7 @@ export class EKSClusterStack  extends cdk.Stack  {
 
     const stack = blueprints.EksBlueprint.builder()
         .account(props?.env?.account)
-        .resourceProvider(blueprints.GlobalResources.Vpc, new blueprints.VpcProvider(props.vpc.vpcId))
+    //    .resourceProvider(blueprints.GlobalResources.Vpc, new blueprints.VpcProvider(props.vpc.vpcId))
         .region(props?.env?.region)
         .addOns(...addOns)
         .clusterProvider(clusterProvider)

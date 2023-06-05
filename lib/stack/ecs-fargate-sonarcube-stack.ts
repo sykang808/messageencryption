@@ -11,7 +11,7 @@ export class ECSFargateSonarCubeStack  extends cdk.Stack  {
   constructor(scope: Construct, id: string, props?:cdk.StackProps) {
     super(scope, id );
 
-    const image = ecs.ContainerImage.fromRegistry('sykang/sonarcube');
+    /* const image = ecs.ContainerImage.fromRegistry('sykang/sonarcube');
 
     const myVpc = ec2.Vpc.fromLookup(this,"MyVPC", { 
       tags:{
@@ -35,7 +35,7 @@ export class ECSFargateSonarCubeStack  extends cdk.Stack  {
     });
 
     new CfnOutput(this, 'SonarCubeEndPoint', { value: loadBalancedFargateService.loadBalancer.loadBalancerDnsName });
-    
+     */
     // The code that defines your stack goes here
 
     // example resource
